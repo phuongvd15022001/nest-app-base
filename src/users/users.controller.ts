@@ -8,13 +8,13 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from './dto/user.response.dto';
+import { TransformInterceptor } from 'src/common/interceptors/transform.interceptor';
 
 @Controller('users')
 export class UsersController {
@@ -22,29 +22,16 @@ export class UsersController {
 
   // GET /users
   @Get()
-  findAll(@Query('search') search?: string) {
-    const users = this.userService.findAll();
-
-    if (!search) {
-      return users;
-    }
-
-    const q = search.toLowerCase();
-    const newUsers = users.filter((user) =>
-      user.name.toLowerCase().includes(q),
-    );
-
-    return newUsers;
+  @UseInterceptors(new TransformInterceptor(UserResponseDto))
+  findAll() {
+    return this.userService.findAll();
   }
 
   // GET /users/:id
+  @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): UserResponseDto {
-    const user = this.userService.findOne(id);
-
-    return plainToInstance(UserResponseDto, user, {
-      excludeExtraneousValues: true,
-    });
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.findOne(id);
   }
 
   // POST /users
@@ -66,7 +53,6 @@ export class UsersController {
   @Delete(':id')
   @HttpCode(204)
   removeUser(@Param('id', ParseIntPipe) id: number) {
-    this.userService.remove(id);
-    return;
+    return this.userService.remove(id);
   }
 }

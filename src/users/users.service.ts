@@ -1,46 +1,56 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User } from './user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [];
-  private idCounter = 1;
+  constructor(private prisma: PrismaService) {}
 
-  findAll(): User[] {
-    return this.users;
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.user.findMany();
+
+    if (users.length == 0) {
+      throw new NotFoundException('No user exists');
+    }
+
+    return users;
   }
 
-  findOne(id: number): User {
-    const user = this.users.find((item) => item.id === id);
+  async findOne(id: number): Promise<User> {
+    const user = await this.prisma.user.findFirst({
+      where: { id },
+    });
 
-    if (!user) {
+    if (user == null) {
       throw new NotFoundException('User not found');
     }
 
     return user;
   }
 
-  create(createUserDto: CreateUserDto): User {
-    const user: User = { id: this.idCounter++, ...createUserDto };
-    this.users.push(user);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = await this.prisma.user.create({ data: createUserDto });
+
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): User {
-    const user = this.findOne(id);
-    Object.assign(user, updateUserDto);
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: updateUserDto,
+    });
+
     return user;
   }
 
-  remove(id: number): void {
-    const idx = this.users.findIndex((item) => item.id === id);
-
-    if (idx === -1) {
-      throw new NotFoundException('User not found');
+  async remove(id: number) {
+    try {
+      await this.prisma.user.delete({ where: { id } });
+    } catch (error) {
+      console.error(error);
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
-
-    this.users.splice(idx, 1);
   }
 }

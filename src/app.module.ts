@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { HelloService } from './hello/hello.service';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from './prisma/prisma.module';
 import Joi from 'joi';
 
 @Module({
@@ -16,6 +17,7 @@ import Joi from 'joi';
         PORT: Joi.number().required(),
       }),
     }),
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService, HelloService],
