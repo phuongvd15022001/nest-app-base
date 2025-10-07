@@ -8,13 +8,15 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user.response.dto';
 import { TransformInterceptor } from 'src/common/interceptors/transform.interceptor';
+import { GetListUsersDto } from './dto/get-list-users.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -23,8 +25,8 @@ export class UsersController {
   // GET /users
   @Get()
   @UseInterceptors(new TransformInterceptor(UserResponseDto))
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Query() getListUsersDto: GetListUsersDto) {
+    return this.userService.findAll({ getListUsersDto });
   }
 
   // GET /users/:id

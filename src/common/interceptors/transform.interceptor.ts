@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
 import { plainToInstance } from 'class-transformer';
+import { BasePaginationResponseDto } from 'src/shared/dtos/base-pagination.response.dto';
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor {
@@ -13,11 +14,22 @@ export class TransformInterceptor<T> implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((data) =>
-        plainToInstance(this.dto, data, {
+      map((data) => {
+        const paginatedData = data as BasePaginationResponseDto<T>;
+
+        if (paginatedData.items && Array.isArray(paginatedData.items)) {
+          return {
+            ...paginatedData,
+            items: plainToInstance(this.dto, paginatedData.items, {
+              excludeExtraneousValues: true,
+            }),
+          };
+        }
+
+        return plainToInstance(this.dto, data, {
           excludeExtraneousValues: true,
-        }),
-      ),
+        });
+      }),
     );
   }
 }
