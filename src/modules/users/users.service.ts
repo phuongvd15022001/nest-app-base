@@ -54,6 +54,9 @@ export class UsersService {
       whereUniqueInput: {
         id,
       },
+      includes: {
+        Product: true,
+      },
     });
 
     if (user == null) {
@@ -73,6 +76,8 @@ export class UsersService {
     if (checkExistEmail) {
       throw new ConflictException('Email already exists');
     }
+
+    console.log(createUserDto);
 
     const user = await this.usersRepository.create({ data: createUserDto });
 

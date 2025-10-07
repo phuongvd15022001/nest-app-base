@@ -10,6 +10,8 @@ async function main() {
       create: {
         email: 'john@example.com',
         name: 'John Doe',
+        password:
+          'd7cd730711e747c1:faeff21ede8dcc56a1046c883c7712261ba251d58f2170de1c369acccb4ebd361183af0a2285b572ba3be08984334cf42c178800bf457ad53b803b046b657c9a',
       },
     });
 
@@ -19,6 +21,8 @@ async function main() {
       create: {
         email: 'jane@example.com',
         name: 'Jane Smith',
+        password:
+          'd7cd730711e747c1:faeff21ede8dcc56a1046c883c7712261ba251d58f2170de1c369acccb4ebd361183af0a2285b572ba3be08984334cf42c178800bf457ad53b803b046b657c9a',
       },
     });
 
@@ -28,6 +32,8 @@ async function main() {
       create: {
         email: 'phuong@example.com',
         name: 'Vũ Đức Phương',
+        password:
+          'd7cd730711e747c1:faeff21ede8dcc56a1046c883c7712261ba251d58f2170de1c369acccb4ebd361183af0a2285b572ba3be08984334cf42c178800bf457ad53b803b046b657c9a',
       },
     });
   });
