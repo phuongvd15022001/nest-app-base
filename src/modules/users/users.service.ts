@@ -44,7 +44,7 @@ export class UsersService {
 
     return BasePaginationResponseDto.convertToPaginationResponse(
       [users, users.length],
-      +getListUsersDto.page,
+      getListUsersDto.page,
       total,
     );
   }
@@ -80,14 +80,16 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const checkExistEmail = await this.usersRepository.findOne({
-      whereUniqueInput: {
-        email: updateUserDto.email,
-      },
-    });
+    if (updateUserDto.email) {
+      const checkExistEmail = await this.usersRepository.findOne({
+        whereUniqueInput: {
+          email: updateUserDto.email,
+        },
+      });
 
-    if (checkExistEmail && checkExistEmail.id != id) {
-      throw new ConflictException('Email already exists');
+      if (checkExistEmail && checkExistEmail.id != id) {
+        throw new ConflictException('Email already exists');
+      }
     }
 
     const checkExistUser = await this.usersRepository.findOne({
