@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { User } from '@prisma/client';
-import type { Response } from 'express';
 import { UsersService } from 'src/modules/users/users.service';
+import { ERole } from 'src/shared/constants/global.constants';
 import { AuthHelpers } from 'src/shared/helpers/auth.helpers';
 
 @Injectable()
@@ -28,6 +28,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       name: user.name,
+      role: user.role as ERole,
     };
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: '5m',

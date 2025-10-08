@@ -9,7 +9,6 @@ import {
   Post,
   Put,
   Query,
-  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -25,6 +24,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BasePaginationResponseDto } from 'src/shared/dtos/base-pagination.response.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
+import { Roles } from 'src/auth/auth.roles.decorator';
+import { ERole } from 'src/shared/constants/global.constants';
 
 @ApiTags('users')
 @Controller('users')
@@ -32,6 +33,7 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   // GET /users
+  @Roles(ERole.USER)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Get()
@@ -44,6 +46,7 @@ export class UsersController {
   }
 
   // GET /users/:id
+  @Roles(ERole.USER)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserWithProductResponseDto))
   @Get(':id')
@@ -54,6 +57,7 @@ export class UsersController {
   }
 
   // POST /users
+  @Roles(ERole.ADMIN)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Post()
@@ -64,6 +68,7 @@ export class UsersController {
   }
 
   // PUT /users/:id
+  @Roles(ERole.ADMIN)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Put(':id')
@@ -77,6 +82,7 @@ export class UsersController {
   }
 
   // DELETE /users/:id
+  @Roles(ERole.ADMIN)
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete user' })
