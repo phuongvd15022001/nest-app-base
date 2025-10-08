@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -22,6 +23,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BasePaginationResponseDto } from 'src/shared/dtos/base-pagination.response.dto';
+import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -29,6 +31,7 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   // GET /users
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiOkResponse({

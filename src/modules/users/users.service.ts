@@ -127,4 +127,18 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
   }
+
+  async findOneByEmail(email: string) {
+    const user = await this.usersRepository.findOne({
+      whereUniqueInput: {
+        email,
+      },
+    });
+
+    if (user == null) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
 }

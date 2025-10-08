@@ -7,7 +7,7 @@ const onCreated = async (params, next): Promise<any> => {
     if (params.action === 'create') {
       const password = params.args['data'].password;
 
-      const encryptedPass = await AuthHelpers.hash(password);
+      const encryptedPass = await AuthHelpers.hash(password as string);
 
       params.args['data'] = {
         ...params.args['data'],
