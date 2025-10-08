@@ -10,10 +10,15 @@ import { UsersRepository } from './users.repository';
 import { BasePaginationResponseDto } from 'src/shared/dtos/base-pagination.response.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/services/prisma/prisma.service';
+import { CreateUsersDto } from './dto/create-users.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private prisma: PrismaService,
+  ) {}
 
   async findAll(params: { getListUsersDto: GetListUsersDto }) {
     const { getListUsersDto } = params;
@@ -76,8 +81,6 @@ export class UsersService {
     if (checkExistEmail) {
       throw new ConflictException('Email already exists');
     }
-
-    console.log(createUserDto);
 
     const user = await this.usersRepository.create({ data: createUserDto });
 
@@ -161,5 +164,16 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async createMany(createUsersDto: CreateUsersDto) {
+    const result = await this.prisma.$transaction(async (transaction) => {
+      return await this.usersRepository.createManyWithTransaction({
+        data: createUsersDto.users,
+        transaction,
+      });
+    });
+
+    return result.count;
   }
 }

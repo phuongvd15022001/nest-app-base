@@ -26,6 +26,7 @@ import { BasePaginationResponseDto } from 'src/shared/dtos/base-pagination.respo
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { Roles } from 'src/auth/auth.roles.decorator';
 import { ERole } from 'src/shared/constants/global.constants';
+import { CreateUsersDto } from './dto/create-users.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -89,5 +90,15 @@ export class UsersController {
   @HttpCode(204)
   removeUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.remove(id);
+  }
+
+  // POST /users/many
+  @Roles(ERole.USER)
+  @UseGuards(JwtAuthGuard)
+  @Post('many')
+  @ApiOperation({ summary: 'Create new user' })
+  @ApiOkResponse({ type: Number })
+  createManyUsers(@Body() createUsersDto: CreateUsersDto) {
+    return this.userService.createMany(createUsersDto);
   }
 }

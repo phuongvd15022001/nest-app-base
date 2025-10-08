@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 
 @Injectable()
@@ -71,6 +72,76 @@ export class UsersRepository {
 
     return this.prisma.user.delete({
       where: whereUniqueInput,
+    });
+  }
+
+  async createWithTransaction(params: {
+    transaction: Omit<
+      PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+      '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+    >;
+    data: Prisma.UserUncheckedCreateInput;
+  }): Promise<User> {
+    const { transaction, data } = params;
+
+    return transaction.user.create({
+      data,
+    });
+  }
+
+  async updateWithTransaction(params: {
+    transaction: Omit<
+      PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+      '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+    >;
+    whereUniqueInput: Prisma.UserWhereUniqueInput;
+    data: Prisma.UserUncheckedUpdateInput;
+  }): Promise<User> {
+    const { transaction, whereUniqueInput, data } = params;
+
+    return transaction.user.update({
+      data,
+      where: whereUniqueInput,
+    });
+  }
+
+  async deleteManyWithTransaction(params: {
+    transaction: Omit<
+      PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+      '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+    >;
+    where: Prisma.UserWhereInput;
+  }) {
+    const { transaction, where } = params;
+    return transaction.user.deleteMany({
+      where,
+    });
+  }
+
+  async deleteWithTransaction(params: {
+    transaction: Omit<
+      PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+      '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+    >;
+    whereUniqueInput: Prisma.UserWhereUniqueInput;
+  }): Promise<User> {
+    const { transaction, whereUniqueInput } = params;
+    return transaction.user.delete({
+      where: whereUniqueInput,
+    });
+  }
+
+  async createManyWithTransaction(params: {
+    transaction: Omit<
+      PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+      '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+    >;
+    data: Prisma.UserUncheckedCreateInput[];
+  }) {
+    const { data, transaction } = params;
+
+    return transaction.user.createMany({
+      data,
     });
   }
 }
