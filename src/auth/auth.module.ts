@@ -7,6 +7,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { UsersModule } from 'src/modules/users/users.module';
 import { JWT_SECRET } from 'src/shared/constants/global.constants';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 
 @Module({
   imports: [
@@ -14,12 +15,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UsersModule,
     JwtModule.register({
       secret: JWT_SECRET,
-      signOptions: {
-        expiresIn: '1h',
-      },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy],
   exports: [AuthService],
   controllers: [AuthController],
 })

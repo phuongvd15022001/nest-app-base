@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -32,17 +33,18 @@ export class UsersController {
 
   // GET /users
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiOkResponse({
     type: BasePaginationResponseDto.apiOKResponse(UserResponseDto),
   })
-  @UseInterceptors(new TransformInterceptor(UserResponseDto))
   findAll(@Query() getListUsersDto: GetListUsersDto) {
     return this.userService.findAll({ getListUsersDto });
   }
 
   // GET /users/:id
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserWithProductResponseDto))
   @Get(':id')
   @ApiOperation({ summary: 'Get detail user' })
@@ -52,6 +54,7 @@ export class UsersController {
   }
 
   // POST /users
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Post()
   @ApiOperation({ summary: 'Create new user' })
@@ -61,6 +64,7 @@ export class UsersController {
   }
 
   // PUT /users/:id
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Put(':id')
   @ApiOperation({ summary: 'Update user' })
@@ -73,6 +77,7 @@ export class UsersController {
   }
 
   // DELETE /users/:id
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete user' })
   @HttpCode(204)

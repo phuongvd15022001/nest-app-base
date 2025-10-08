@@ -115,6 +115,27 @@ export class UsersService {
     return user;
   }
 
+  async refreshToken(id: number, refreshToken: string) {
+    const checkExistUser = await this.usersRepository.findOne({
+      whereUniqueInput: { id },
+    });
+
+    if (!checkExistUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    const user = await this.usersRepository.update({
+      whereUniqueInput: {
+        id,
+      },
+      data: {
+        refreshToken,
+      },
+    });
+
+    return user;
+  }
+
   async remove(id: number) {
     try {
       await this.usersRepository.delete({
