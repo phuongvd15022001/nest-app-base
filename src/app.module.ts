@@ -10,6 +10,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MailModule } from './services/mail/mail.module';
 
 @Module({
   imports: [
@@ -21,6 +22,8 @@ import { join } from 'path';
         PORT: Joi.number().required(),
         DATABASE_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
+        EMAIL: Joi.string().required(),
+        APP_PASSWORD: Joi.string().required(),
       }),
     }),
     PrismaModule,
@@ -30,6 +33,7 @@ import { join } from 'path';
       serveRoot: '/uploads',
     }),
     UploadsModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

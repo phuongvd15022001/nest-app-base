@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { User } from '@prisma/client';
 import { UsersService } from 'src/modules/users/users.service';
+import { MailService } from 'src/services/mail/mail.service';
 import { ERole } from 'src/shared/constants/global.constants';
 import { AuthHelpers } from 'src/shared/helpers/auth.helpers';
 
@@ -10,6 +11,7 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private mailService: MailService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -30,6 +32,9 @@ export class AuthService {
       name: user.name,
       role: user.role as ERole,
     };
+
+    await this.mailService.sendUserConfirmation(user, 'token');
+
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: '5m',
     });
