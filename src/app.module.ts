@@ -7,6 +7,9 @@ import { UsersModule } from './modules/users/users.module';
 import { PrismaModule } from './services/prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { UploadsModule } from './modules/uploads/uploads.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -22,6 +25,11 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
     }),
     PrismaModule,
     AuthModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '/uploads'),
+      serveRoot: '/uploads',
+    }),
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
