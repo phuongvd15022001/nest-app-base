@@ -11,6 +11,8 @@ import { UploadsModule } from './modules/uploads/uploads.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MailModule } from './services/mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksService } from './schedule/tasks.service';
 
 @Module({
   imports: [
@@ -34,9 +36,10 @@ import { MailModule } from './services/mail/mail.module';
     }),
     UploadsModule,
     MailModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TasksService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
