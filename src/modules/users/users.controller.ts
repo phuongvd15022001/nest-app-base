@@ -17,7 +17,7 @@ import {
   UserResponseDto,
   UserWithProductResponseDto,
 } from './dto/user.response.dto';
-import { TransformInterceptor } from 'src/common/interceptors/transform.interceptor';
+import { TransformInterceptor } from 'src/shared/interceptors/transform.interceptor';
 import { GetListUsersDto } from './dto/get-list-users.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
