@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
+import { StringField } from 'src/shared/decorators/dto.decorators';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'Jon', description: 'User Name' })
-  @IsString()
+  @StringField({ optional: false }, { min: 1, max: 10 })
   name: string;
 
   @ApiProperty({ example: 'jon@gmail.com', description: 'User Email' })

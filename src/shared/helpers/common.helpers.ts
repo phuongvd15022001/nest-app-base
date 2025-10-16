@@ -17,6 +17,14 @@ const transformPaginationQuery = (
   };
 };
 
+const formatMessageString = (str: string, ...args: unknown[]): string => {
+  return `${str}`.replace(
+    /\{(\d+)}/g,
+    (match, index) => (args[Number(index)] || match) as string,
+  );
+};
+
 export const CommonHelpers = {
   transformPaginationQuery,
+  formatMessageString,
 };

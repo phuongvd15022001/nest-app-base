@@ -58,7 +58,7 @@ export class UsersController {
   }
 
   // POST /users
-  @Roles(ERole.ADMIN)
+  @Roles(ERole.USER)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Post()
