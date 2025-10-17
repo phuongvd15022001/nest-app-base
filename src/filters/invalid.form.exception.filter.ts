@@ -12,6 +12,7 @@ export class InvalidFormExceptionFilter implements ExceptionFilter {
     response.status(status).json({
       statusCode: status,
       errors: exception.getFieldErrors(),
+      message: exception.getErrorMessage(),
     });
   }
 }
