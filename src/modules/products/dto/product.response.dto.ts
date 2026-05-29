@@ -1,20 +1,23 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Type } from 'class-transformer';
+import { ResField } from 'src/shared/decorators/dto.decorators';
+import { UserResponseDto } from 'src/modules/users/dto/user.response.dto';
 
 export class ProductResponseDto {
-  @ApiProperty({ example: 1, description: 'Product ID' })
-  @Expose()
+  @ResField({ example: 1, description: 'Product ID' })
   id: number;
 
-  @ApiProperty({ example: 'Chicken', description: 'Product Name' })
-  @Expose()
+  @ResField({ example: 'Chicken', description: 'Product Name' })
   name: string;
 
-  @ApiPropertyOptional({ example: 'Fresh whole chicken', description: 'Product Description' })
-  @Expose()
+  @ResField({ example: 'Fresh whole chicken', description: 'Product Description', required: false })
   description?: string;
 
-  @ApiProperty({ example: 9.99, description: 'Product Price' })
-  @Expose()
+  @ResField({ example: 9.99, description: 'Product Price' })
   price: number;
+}
+
+export class ProductWithUserResponseDto extends ProductResponseDto {
+  @ResField({ type: () => UserResponseDto, description: 'Product owner', required: false })
+  @Type(() => UserResponseDto)
+  user?: UserResponseDto;
 }

@@ -1,14 +1,12 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { StringField } from 'src/shared/decorators/dto.decorators';
 
 export class UpdateUserDto {
   @ApiPropertyOptional({ example: 'Jon', description: 'User Name' })
-  @IsOptional()
-  @IsString()
+  @StringField({ optional: true }, { min: 1, max: 100 })
   name?: string;
 
   @ApiPropertyOptional({ example: 'jon@gmail.com', description: 'User Email' })
-  @IsOptional()
-  @IsString()
+  @StringField({ optional: true }, { min: 1, max: 100 })
   email?: string;
 }

@@ -8,6 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { ProductsModule } from './modules/products/products.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { UsersModule } from './modules/users/users.module';
 import { TasksModule } from './schedule/tasks.module';
@@ -31,6 +32,7 @@ import { PrismaModule } from './services/prisma/prisma.module';
     PrismaModule,
     AuthModule,
     UsersModule,
+    ProductsModule,
     UploadsModule,
     MailModule,
     ScheduleModule.forRoot(),
