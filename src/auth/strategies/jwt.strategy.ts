@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { ERole, JWT_SECRET } from 'src/shared/constants/global.constants';
+import { ERole } from 'src/shared/constants/global.constants';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -13,7 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ExtractJwt.fromUrlQueryParameter('token'),
       ]),
       ignoreExpiration: false,
-      secretOrKey: JWT_SECRET as string,
+      secretOrKey: process.env.JWT_SECRET!,
       passReqToCallback: true,
     });
   }

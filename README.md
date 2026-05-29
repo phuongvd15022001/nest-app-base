@@ -96,3 +96,17 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Docker
+
+1. Khởi động container:
+docker compose up -d
+
+2. Kiểm tra container đang chạy:
+docker compose ps
+
+3. Khi muốn dừng:
+docker compose down
+
+4. Dừng và xóa cả data:
+docker compose down -v
