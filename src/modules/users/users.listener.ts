@@ -1,19 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { Prisma } from '@prisma/client';
 import { AuthHelpers } from 'src/shared/helpers/auth.helpers';
 
-const onCreated = async (params, next): Promise<any> => {
-  if (params.model == 'User') {
-    if (params.action === 'create') {
-      const password = params.args['data'].password;
-
-      const encryptedPass = await AuthHelpers.hash(password as string);
-
-      params.args['data'] = {
-        ...params.args['data'],
-        password: encryptedPass,
-      };
-    }
+const onCreated: Prisma.Middleware = async (params, next) => {
+  if (params.model === 'User' && params.action === 'create') {
+    const args = params.args as { data: { password: string } };
+    args.data.password = await AuthHelpers.hash(args.data.password);
   }
 
   return next(params);

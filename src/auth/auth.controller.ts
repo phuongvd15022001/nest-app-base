@@ -1,30 +1,36 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
-import { LocalAuthGuard } from './guard/local.guard';
-import { JwtRefreshAuthGuard } from './guard/jwt-refresh.guard';
+import { Controller, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
-import { RefreshTokenDto } from './dto/refesh-token.dto';
+import { TransformInterceptor } from 'src/shared/interceptors/transform.interceptor';
+import { AuthService } from './auth.service';
+import { AuthResponseDto } from './dto/auth.response.dto';
+import { LoginDto } from './dto/login.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { JwtRefreshAuthGuard } from './guard/jwt-refresh.guard';
+import { LocalAuthGuard } from './guard/local.guard';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
+  @UseInterceptors(new TransformInterceptor(AuthResponseDto))
   @Post('login')
+  @ApiOperation({ summary: 'Login with email and password' })
   @ApiBody({ type: LoginDto })
-  async login(@Request() req: Request & { user: User }) {
-    const user = req.user;
-    return this.authService.login(user);
+  @ApiOkResponse({ type: AuthResponseDto })
+  login(@Request() req: Request & { user: User }) {
+    return this.authService.login(req.user);
   }
 
   @UseGuards(JwtRefreshAuthGuard)
+  @UseInterceptors(new TransformInterceptor(AuthResponseDto))
   @Post('refresh')
+  @ApiOperation({ summary: 'Refresh access token' })
   @ApiBody({ type: RefreshTokenDto })
-  async refreshTokens(@Request() req: Request & { user: User }) {
-    const user = req.user;
-    return this.authService.login(user);
+  @ApiOkResponse({ type: AuthResponseDto })
+  refreshTokens(@Request() req: Request & { user: User }) {
+    return this.authService.login(req.user);
   }
 }

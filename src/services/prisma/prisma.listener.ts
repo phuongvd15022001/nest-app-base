@@ -1,33 +1,31 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { Prisma } from '@prisma/client';
 import { SOFT_DELETE_MODEL_NAMES } from './prisma.config';
 
-const onFind = (params, next): any => {
-  if (SOFT_DELETE_MODEL_NAMES.includes(params.model)) {
+type AnyArgs = Record<string, Record<string, unknown> | undefined>;
+
+const onFind: Prisma.Middleware = (params, next) => {
+  if (SOFT_DELETE_MODEL_NAMES.includes(params.model ?? '')) {
+    const args = params.args as AnyArgs;
+
     if (params.action === 'findUnique' || params.action === 'findFirst') {
-      // Change to findFirst - you cannot filter
-      // By anything except ID / unique with findUnique
       params.action = 'findFirst';
 
-      // Add 'deletedAt' filter
-      if (params.args.where) {
-        if (params.args.where.deletedAt == undefined) {
-          // Exclude deletedAt records if they have not been explicitly requested
-          params.args.where['deletedAt'] = null;
+      if (args.where) {
+        if (args.where['deletedAt'] === undefined) {
+          args.where['deletedAt'] = null;
         }
       } else {
-        params.args['where'] = { deletedAt: null };
+        args['where'] = { deletedAt: null };
       }
     }
 
     if (params.action === 'findMany' || params.action === 'count') {
-      // Find many queries
-      if (params.args.where) {
-        if (params.args.where.deletedAt == undefined) {
-          // Exclude deletedAt records if they have not been explicitly requested
-          params.args.where['deletedAt'] = null;
+      if (args.where) {
+        if (args.where['deletedAt'] === undefined) {
+          args.where['deletedAt'] = null;
         }
       } else {
-        params.args['where'] = { deletedAt: null };
+        args['where'] = { deletedAt: null };
       }
     }
   }
@@ -35,23 +33,21 @@ const onFind = (params, next): any => {
   return next(params);
 };
 
-const onDeleted = (params, next): any => {
-  // Check incoming query type
-  if (SOFT_DELETE_MODEL_NAMES.includes(params.model)) {
-    if (params.action == 'delete') {
-      // Delete queries
-      // Change action to an update
+const onDeleted: Prisma.Middleware = (params, next) => {
+  if (SOFT_DELETE_MODEL_NAMES.includes(params.model ?? '')) {
+    const args = params.args as AnyArgs;
+
+    if (params.action === 'delete') {
       params.action = 'update';
-      params.args['data'] = { deletedAt: new Date() };
+      args['data'] = { deletedAt: new Date() };
     }
 
-    if (params.action == 'deleteMany') {
-      // Delete many queries
+    if (params.action === 'deleteMany') {
       params.action = 'updateMany';
-      if (params.args.data != undefined) {
-        params.args.data['deletedAt'] = new Date();
+      if (args.data !== undefined) {
+        args.data['deletedAt'] = new Date();
       } else {
-        params.args['data'] = { deletedAt: new Date() };
+        args['data'] = { deletedAt: new Date() };
       }
     }
   }

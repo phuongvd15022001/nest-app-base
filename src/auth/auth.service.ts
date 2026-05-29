@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import type { User } from '@prisma/client';
 import { UsersService } from 'src/modules/users/users.service';
-import { MailService } from 'src/services/mail/mail.service';
 import { ERole } from 'src/shared/constants/global.constants';
 import { AuthHelpers } from 'src/shared/helpers/auth.helpers';
 
@@ -11,7 +11,7 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private mailService: MailService,
+    private configService: ConfigService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -33,26 +33,19 @@ export class AuthService {
       role: user.role as ERole,
     };
 
-    await this.mailService.sendUserConfirmation(user, 'token');
-
-    const accessToken = this.jwtService.sign(payload, {
-      expiresIn: '5m',
-    });
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '5m' });
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: '7d',
+      secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
     });
     const hashedRefreshToken = await AuthHelpers.hash(refreshToken);
 
-    await this.usersService.refreshToken(user.id, hashedRefreshToken as string);
+    await this.usersService.refreshToken(user.id, hashedRefreshToken);
 
-    return {
-      payload,
-      accessToken,
-      refreshToken,
-    };
+    return { payload, accessToken, refreshToken };
   }
 
   async getInfo(id: number) {
-    return await this.usersService.findOne(id);
+    return this.usersService.findOne(id);
   }
 }

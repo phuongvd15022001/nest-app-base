@@ -110,3 +110,13 @@ docker compose down
 
 4. Dừng và xóa cả data:
 docker compose down -v
+
+## Prisma
+Migration
+npx prisma migrate dev --name migration_name
+
+Generate
+npx prisma generate
+
+Seed
+npm run prisma:seed

@@ -34,18 +34,10 @@ export class UsersService {
       },
     };
 
-    const users = await this.usersRepository.findAll({
-      take,
-      skip,
-      orderBy: sortByField,
-      where,
-    });
-
-    if (users.length == 0) {
-      throw new NotFoundException('No user exists');
-    }
-
-    const total = await this.usersRepository.count({ where });
+    const [users, total] = await Promise.all([
+      this.usersRepository.findAll({ take, skip, orderBy: sortByField, where }),
+      this.usersRepository.count({ where }),
+    ]);
 
     return BasePaginationResponseDto.convertToPaginationResponse(
       [users, users.length],
@@ -64,7 +56,7 @@ export class UsersService {
       },
     });
 
-    if (user == null) {
+    if (!user) {
       throw new NotFoundException('User not found');
     }
 
@@ -95,7 +87,7 @@ export class UsersService {
         },
       });
 
-      if (checkExistEmail && checkExistEmail.id != id) {
+      if (checkExistEmail && checkExistEmail.id !== id) {
         throw new ConflictException('Email already exists');
       }
     }
@@ -140,16 +132,11 @@ export class UsersService {
   }
 
   async remove(id: number) {
-    try {
-      await this.usersRepository.delete({
-        whereUniqueInput: {
-          id,
-        },
-      });
-    } catch (error) {
-      console.error(error);
+    const user = await this.usersRepository.findOne({ whereUniqueInput: { id } });
+    if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
+    await this.usersRepository.delete({ whereUniqueInput: { id } });
   }
 
   async findOneByEmail(email: string) {
@@ -159,7 +146,7 @@ export class UsersService {
       },
     });
 
-    if (user == null) {
+    if (!user) {
       throw new NotFoundException('User not found');
     }
 
@@ -167,12 +154,12 @@ export class UsersService {
   }
 
   async createMany(createUsersDto: CreateUsersDto) {
-    const result = await this.prisma.$transaction(async (transaction) => {
-      return await this.usersRepository.createManyWithTransaction({
+    const result = await this.prisma.$transaction((transaction) =>
+      this.usersRepository.createManyWithTransaction({
         data: createUsersDto.users,
         transaction,
-      });
-    });
+      }),
+    );
 
     return result.count;
   }
