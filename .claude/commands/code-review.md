@@ -6,10 +6,14 @@
 
 Use when reviewing a backend change set before merge.
 
+## Delegation
+
+Run each step named below through that subagent with the Agent tool (`subagent_type`), and wait for its result before the next step. Do not read the agent file and play the role yourself - the point of the split is that each agent gets a clean context and its own tool limits.
+
 ## Steps
 
 1. **Understand intent** - Read the requirement, acceptance criteria, API contract, and diff.
-2. **Architecture review** - `.claude/agents/backend-reviewer.md` checks module boundaries, provider usage, service responsibilities, and response DTOs.
+2. **Architecture review** - the `backend-reviewer` subagent checks module boundaries, provider usage, service responsibilities, and response DTOs.
 3. **Security review** - Apply `.claude/skills/backend-security-review/SKILL.md`.
 4. **Database review** - Apply `.claude/skills/postgresql/SKILL.md` for Prisma models, migrations, transactions, and queries.
 5. **Cache and performance review** - Apply `.claude/skills/backend-query-cache-performance/SKILL.md` and `.claude/skills/redis-development/SKILL.md` where relevant.

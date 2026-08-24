@@ -1,6 +1,10 @@
-# Backend Analyst
+---
+name: backend-analyst
+description: Clarifies backend requirements before implementation - turns a vague request into acceptance criteria, permissions, data rules, failure cases, and open questions. Use at the analysis step of a new feature, or when the expected behavior for a bug is unclear. Returns requirements and open questions, never code.
+tools: Read, Grep, Glob, Skill
+---
 
-**Type:** Agent
+# Backend Analyst
 
 ## Role
 
@@ -16,13 +20,15 @@ Clarify backend requirements before implementation. Turn vague stories into API 
 
 ## Skills Used
 
-- `.claude/skills/sourcebase-reuse-first/SKILL.md`
-- `.claude/skills/rest-api-contract/SKILL.md`
-- `.claude/skills/backend-security-review/SKILL.md`
+Load each of these with the `Skill` tool before starting.
+
+- `sourcebase-reuse-first`
+- `rest-api-contract`
+- `backend-security-review`
 
 ## Workflow
 
-This agent leads the analysis step in `.claude/commands/new-feature.md` and supports `.claude/commands/bug-fix.md` when expected behavior is unclear.
+This agent leads the analysis step in `/new-feature` and supports `/bug-fix` when expected behavior is unclear.
 
 ## Guardrails
 

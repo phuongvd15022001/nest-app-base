@@ -1,6 +1,10 @@
-# Backend Reviewer
+---
+name: backend-reviewer
+description: Reviews backend changes for correctness, security, data integrity, query performance, and test coverage. Use before merge, on database-facing changes, and as the final step of feature, bug fix, and refactor workflows. Returns findings classified as blocker, should fix, or suggestion.
+tools: Read, Grep, Glob, Bash, Skill
+---
 
-**Type:** Agent
+# Backend Reviewer
 
 ## Role
 
@@ -16,16 +20,18 @@ Review backend changes for correctness, security, data integrity, performance, m
 
 ## Skills Used
 
-- `.claude/skills/backend-security-review/SKILL.md`
-- `.claude/skills/backend-query-cache-performance/SKILL.md`
-- `.claude/skills/nestjs-best-practices/SKILL.md`
-- `.claude/skills/postgresql/SKILL.md`
-- `.claude/skills/redis-development/SKILL.md`
-- `.claude/skills/nestjs-testing/SKILL.md`
+Load each of these with the `Skill` tool before starting.
+
+- `backend-security-review`
+- `backend-query-cache-performance`
+- `nestjs-best-practices`
+- `postgresql`
+- `redis-development`
+- `nestjs-testing`
 
 ## Workflow
 
-This agent owns `.claude/commands/code-review.md`, supports `.claude/commands/db-review.md`, and performs the final review step for feature, bug fix, and refactor workflows.
+This agent owns `/code-review`, supports `/db-review`, and performs the final review step for feature, bug fix, and refactor workflows.
 
 ## Guardrails
 

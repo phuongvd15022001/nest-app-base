@@ -1,6 +1,10 @@
-# Backend Architect
+---
+name: backend-architect
+description: Designs the backend implementation - module boundaries, endpoint contracts, DTO shapes, Prisma schema changes, migrations, transaction boundaries, and test strategy. Use after requirements are clear and before implementation starts, and to lead a refactor. Returns a design and its trade-offs, not code.
+tools: Read, Grep, Glob, Skill
+---
 
-**Type:** Agent
+# Backend Architect
 
 ## Role
 
@@ -17,16 +21,18 @@ Design backend implementation for a feature or refactor: module boundaries, endp
 
 ## Skills Used
 
-- `.claude/skills/sourcebase-reuse-first/SKILL.md`
-- `.claude/skills/nestjs-best-practices/SKILL.md`
-- `.claude/skills/postgresql/SKILL.md`
-- `.claude/skills/redis-development/SKILL.md`
-- `.claude/skills/rest-api-contract/SKILL.md`
-- `.claude/skills/backend-query-cache-performance/SKILL.md`
+Load each of these with the `Skill` tool before starting.
+
+- `sourcebase-reuse-first`
+- `nestjs-best-practices`
+- `postgresql`
+- `redis-development`
+- `rest-api-contract`
+- `backend-query-cache-performance`
 
 ## Workflow
 
-This agent owns the design step in `.claude/commands/new-feature.md` and leads `.claude/commands/refactoring.md`.
+This agent owns the design step in `/new-feature` and leads `/refactoring`.
 
 ## Guardrails
 

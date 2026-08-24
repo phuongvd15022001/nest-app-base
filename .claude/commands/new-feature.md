@@ -10,14 +10,18 @@ Use when building a new backend capability such as an endpoint, service flow, Pr
 
 Read `CLAUDE.md`, project docs, and nearby modules. Ask only for details that cannot be discovered from the repository or existing requirements.
 
+## Delegation
+
+Run each step named below through that subagent with the Agent tool (`subagent_type`), and wait for its result before the next step. Do not read the agent file and play the role yourself - the point of the split is that each agent gets a clean context and its own tool limits.
+
 ## Steps
 
 0. **Context** - `.claude/skills/sourcebase-reuse-first/SKILL.md` inspects existing modules, scripts, patterns, DTOs, repositories, the Prisma schema, migrations, and tests.
-1. **Analysis** - `.claude/agents/backend-analyst.md` defines acceptance criteria, permissions, data rules, errors, and affected contracts.
-2. **Design** - `.claude/agents/backend-architect.md` defines module boundaries, endpoint contract, DTOs, Prisma schema changes, transaction boundaries, cache behavior, and test strategy.
-3. **Implementation** - `.claude/agents/backend-developer.md` implements the smallest scoped change with NestJS, Prisma, PostgreSQL, and Redis guidance.
-4. **Tests** - `.claude/agents/backend-tester.md` runs `.claude/commands/test-generation.md` for service, endpoint, and regression coverage.
-5. **Review** - `.claude/agents/backend-reviewer.md` runs `.claude/commands/code-review.md` and verifies security, data integrity, query performance, cache behavior, and tests.
+1. **Analysis** - the `backend-analyst` subagent defines acceptance criteria, permissions, data rules, errors, and affected contracts.
+2. **Design** - the `backend-architect` subagent defines module boundaries, endpoint contract, DTOs, Prisma schema changes, transaction boundaries, cache behavior, and test strategy.
+3. **Implementation** - the `backend-developer` subagent implements the smallest scoped change with NestJS, Prisma, PostgreSQL, and Redis guidance.
+4. **Tests** - the `backend-tester` subagent runs `/test-generation` for service, endpoint, and regression coverage.
+5. **Review** - the `backend-reviewer` subagent runs `/code-review` and verifies security, data integrity, query performance, cache behavior, and tests.
 
 ## Definition Of Done
 

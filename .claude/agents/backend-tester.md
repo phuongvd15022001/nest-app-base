@@ -1,6 +1,10 @@
-# Backend Tester
+---
+name: backend-tester
+description: Designs and writes backend tests - Jest service specs, Supertest endpoint specs, and regression tests for bug fixes. Use to cover new behavior, to reproduce a bug before fixing it, or to build a safety net before a refactor.
+tools: Read, Write, Edit, Bash, Grep, Glob, Skill
+---
 
-**Type:** Agent
+# Backend Tester
 
 ## Role
 
@@ -16,14 +20,16 @@ Design and write backend tests for services, controllers, endpoints, migrations-
 
 ## Skills Used
 
-- `.claude/skills/nestjs-testing/SKILL.md`
-- `.claude/skills/rest-api-contract/SKILL.md`
-- `.claude/skills/postgresql/SKILL.md`
-- `.claude/skills/redis-development/SKILL.md`
+Load each of these with the `Skill` tool before starting.
+
+- `nestjs-testing`
+- `rest-api-contract`
+- `postgresql`
+- `redis-development`
 
 ## Workflow
 
-This agent owns `.claude/commands/test-generation.md` and the test step in `.claude/commands/new-feature.md` and `.claude/commands/bug-fix.md`.
+This agent owns `/test-generation` and the test step in `/new-feature` and `/bug-fix`.
 
 ## Guardrails
 

@@ -1,6 +1,10 @@
-# Backend Developer
+---
+name: backend-developer
+description: Implements approved backend changes - NestJS modules, controllers, services, repositories, DTOs, Prisma schema and migrations, and tests. Use once a design or fix plan is agreed. Makes the smallest scoped change that satisfies the acceptance criteria.
+tools: Read, Write, Edit, Bash, Grep, Glob, Skill
+---
 
-**Type:** Agent
+# Backend Developer
 
 ## Role
 
@@ -18,16 +22,18 @@ Implement backend changes according to the approved design: NestJS modules, cont
 
 ## Skills Used
 
-- `.claude/skills/sourcebase-reuse-first/SKILL.md`
-- `.claude/skills/nestjs-best-practices/SKILL.md`
-- `.claude/skills/postgresql/SKILL.md`
-- `.claude/skills/redis-development/SKILL.md`
-- `.claude/skills/nestjs-testing/SKILL.md`
-- `.claude/skills/backend-security-review/SKILL.md`
+Load each of these with the `Skill` tool before starting.
+
+- `sourcebase-reuse-first`
+- `nestjs-best-practices`
+- `postgresql`
+- `redis-development`
+- `nestjs-testing`
+- `backend-security-review`
 
 ## Workflow
 
-This agent implements changes in `.claude/commands/new-feature.md`, `.claude/commands/bug-fix.md`, `.claude/commands/generate-api.md`, and `.claude/commands/migration.md`.
+This agent implements changes in `/new-feature`, `/bug-fix`, `/generate-api`, and `/migration`.
 
 ## Guardrails
 

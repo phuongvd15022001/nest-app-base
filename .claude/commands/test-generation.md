@@ -6,9 +6,13 @@
 
 Use when adding backend tests for a feature, bug fix, module, service, controller, endpoint, migration-adjacent behavior, or cache behavior.
 
+## Delegation
+
+Run each step named below through that subagent with the Agent tool (`subagent_type`), and wait for its result before the next step. Do not read the agent file and play the role yourself - the point of the split is that each agent gets a clean context and its own tool limits.
+
 ## Steps
 
-1. **Read behavior** - `.claude/agents/backend-tester.md` reads acceptance criteria, API contract, and existing tests.
+1. **Read behavior** - the `backend-tester` subagent reads acceptance criteria, API contract, and existing tests.
 2. **List cases** - Cover success, validation failure, authorization failure, missing records, transaction failure, cache invalidation, and regression paths where relevant.
 3. **Write tests** - Apply `.claude/skills/nestjs-testing/SKILL.md` using existing project patterns.
 4. **Run focused tests** - Run the smallest command that exercises the new tests.

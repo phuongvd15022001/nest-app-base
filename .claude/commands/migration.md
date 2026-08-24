@@ -6,16 +6,20 @@
 
 Use when adding, editing, or reviewing Prisma schema changes and the migrations they generate.
 
+## Delegation
+
+Run each step named below through that subagent with the Agent tool (`subagent_type`), and wait for its result before the next step. Do not read the agent file and play the role yourself - the point of the split is that each agent gets a clean context and its own tool limits.
+
 ## Steps
 
 1. **Inspect current schema pattern** - Use `.claude/skills/sourcebase-reuse-first/SKILL.md` to read `prisma/schema.prisma`, existing migrations in `prisma/migrations/`, naming conventions, and `package.json` scripts.
 2. **Design schema change** - Use `.claude/skills/postgresql/SKILL.md` to define models, fields, indexes, relations, `onDelete` behavior, soft delete, and the reverse migration.
-3. **Edit the schema** - `.claude/agents/backend-developer.md` edits `prisma/schema.prisma` only. Never hand-write SQL into an existing migration folder.
+3. **Edit the schema** - the `backend-developer` subagent edits `prisma/schema.prisma` only. Never hand-write SQL into an existing migration folder.
 4. **Generate the migration** - Run `npx prisma migrate dev --name <change_name>`, then review the generated `migration.sql` before committing it.
 5. **Regenerate the client** - Run `npx prisma generate` so `Prisma.*` types and scalar field enums match the schema.
 6. **Update dependent code** - Align repositories, DTOs, response DTOs, and `SOFT_DELETE_MODEL_NAMES` (`src/services/prisma/prisma.config.ts`) with the new schema.
 7. **Verify** - Run `npm run build` and the affected tests.
-8. **Review** - `.claude/agents/backend-reviewer.md` checks the reverse plan, index coverage, data safety, and query impact.
+8. **Review** - the `backend-reviewer` subagent checks the reverse plan, index coverage, data safety, and query impact.
 
 ## Rollback Rule
 
