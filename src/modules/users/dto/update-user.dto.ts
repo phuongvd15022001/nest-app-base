@@ -6,7 +6,10 @@ export class UpdateUserDto {
   @StringField({ optional: true }, { min: 1, max: 100 })
   name?: string;
 
-  @ApiPropertyOptional({ example: 'jon@gmail.com', description: 'User Email' })
+  @ApiPropertyOptional({
+    example: 'john@example.com',
+    description: 'User Email',
+  })
   @StringField({ optional: true }, { min: 1, max: 100 })
   email?: string;
 }

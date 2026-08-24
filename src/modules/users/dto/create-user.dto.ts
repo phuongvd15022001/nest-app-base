@@ -6,12 +6,12 @@ export class CreateUserDto {
   @StringField({ optional: false }, { min: 1, max: 50 })
   name: string;
 
-  @ApiProperty({ example: 'jon@gmail.com', description: 'User Email' })
+  @ApiProperty({ example: 'john@example.com', description: 'User Email' })
   @EmailField()
   email: string;
 
   @ApiProperty({
-    example: '123456',
+    example: 'password123',
     description: 'User Password',
     minLength: 6,
     maxLength: 100,

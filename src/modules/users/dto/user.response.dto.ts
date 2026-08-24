@@ -9,7 +9,7 @@ export class UserResponseDto {
   @ResField({ example: 'Jon', description: 'User Name' })
   name: string;
 
-  @ResField({ example: 'jon@gmail.com', description: 'User Email' })
+  @ResField({ example: 'john@example.com', description: 'User Email' })
   email: string;
 }
 

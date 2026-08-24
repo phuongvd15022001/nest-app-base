@@ -56,7 +56,7 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
-  @Roles(ERole.USER)
+  @Roles(ERole.ADMIN)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(UserResponseDto))
   @Post()
@@ -88,7 +88,7 @@ export class UsersController {
     return this.userService.remove(id);
   }
 
-  @Roles(ERole.USER)
+  @Roles(ERole.ADMIN)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(new TransformInterceptor(CreateManyUsersResponseDto))
   @Post('bulk')
