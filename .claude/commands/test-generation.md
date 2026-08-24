@@ -1,6 +1,8 @@
-# Test Generation
+---
+description: Add Jest service specs and Supertest endpoint specs for a feature, fix, or module.
+---
 
-**Type:** Workflow
+# Test Generation
 
 ## Trigger
 
@@ -14,7 +16,7 @@ Run each step named below through that subagent with the Agent tool (`subagent_t
 
 1. **Read behavior** - the `backend-tester` subagent reads acceptance criteria, API contract, and existing tests.
 2. **List cases** - Cover success, validation failure, authorization failure, missing records, transaction failure, cache invalidation, and regression paths where relevant.
-3. **Write tests** - Apply `.claude/skills/nestjs-testing/SKILL.md` using existing project patterns.
+3. **Write tests** - Apply the `nestjs-testing` skill using existing project patterns.
 4. **Run focused tests** - Run the smallest command that exercises the new tests.
 5. **Run relevant suite** - Run the module or project test command that catches regressions.
 6. **Patch gaps** - Add missing cases for meaningful uncovered branches.

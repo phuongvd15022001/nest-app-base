@@ -11,7 +11,7 @@ Use this skill when reviewing list endpoints, heavy reads, cache additions, or s
 
 ## Query Review
 
-- Confirm the endpoint filters by tenant, company, user, or ownership scope where needed.
+- Confirm the endpoint applies ownership scope where the contract requires it. The only scope column in this project is `Product.userId`; there is no tenant or company dimension.
 - Confirm list endpoints paginate with `skip` / `take`, and that the `count` uses the same `where`.
 - Check that filter and sort columns have appropriate `@@index` / `@@unique` entries.
 - Check that dynamic sort fields are whitelisted through `Prisma.<Model>ScalarFieldEnum`, not taken raw from the DTO.

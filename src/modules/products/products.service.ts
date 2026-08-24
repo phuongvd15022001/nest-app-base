@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, Product, User } from '@prisma/client';
 import { ERole } from 'src/shared/constants/global.constants';
 import { BasePaginationResponseDto } from 'src/shared/dtos/base-pagination.response.dto';
 import { CommonHelpers } from 'src/shared/helpers/common.helpers';
@@ -51,13 +51,20 @@ export class ProductsService {
   }
 
   async findOne(id: number) {
-    const product = await this.productsRepository.findOne({
+    const product = (await this.productsRepository.findOne({
       whereUniqueInput: { id },
       includes: { user: true },
-    });
+    })) as (Product & { user?: User | null }) | null;
 
     if (!product) {
       throw new NotFoundException('Product not found');
+    }
+
+    // `user` is a required to-one relation, so Prisma cannot filter it inside
+    // `include`, and the soft-delete middleware does not reach nested reads.
+    // Drop the owner rather than the product: the product itself is still live.
+    if (product.user?.deletedAt) {
+      return { ...product, user: undefined };
     }
 
     return product;

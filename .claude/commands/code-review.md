@@ -1,6 +1,8 @@
-# Code Review
+---
+description: Review a backend change set before merge across architecture, security, database, cache, and tests.
+---
 
-**Type:** Workflow
+# Code Review
 
 ## Trigger
 
@@ -14,10 +16,10 @@ Run each step named below through that subagent with the Agent tool (`subagent_t
 
 1. **Understand intent** - Read the requirement, acceptance criteria, API contract, and diff.
 2. **Architecture review** - the `backend-reviewer` subagent checks module boundaries, provider usage, service responsibilities, and response DTOs.
-3. **Security review** - Apply `.claude/skills/backend-security-review/SKILL.md`.
-4. **Database review** - Apply `.claude/skills/postgresql/SKILL.md` for Prisma models, migrations, transactions, and queries.
-5. **Cache and performance review** - Apply `.claude/skills/backend-query-cache-performance/SKILL.md` and `.claude/skills/redis-development/SKILL.md` where relevant.
-6. **Test review** - Apply `.claude/skills/nestjs-testing/SKILL.md`.
+3. **Security review** - Apply the `backend-security-review` skill.
+4. **Database review** - Apply the `postgresql` skill for Prisma models, migrations, transactions, and queries.
+5. **Cache and performance review** - Apply the `backend-query-cache-performance` skill and the `redis-development` skill where relevant.
+6. **Test review** - Apply the `nestjs-testing` skill.
 7. **Findings** - Report blocker, should fix, and suggestion items with reason and fix direction.
 8. **Re-check** - After changes, re-check every blocker and agreed should-fix item.
 

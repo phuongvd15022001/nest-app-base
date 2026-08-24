@@ -113,7 +113,7 @@ export function NumberField(
   return initializeDecorators(
     options as IDtoDecoratorOption,
     (decorators: PropertyDecorator[]) => {
-      if (options?.min) {
+      if (options?.min !== undefined) {
         decorators.push(
           Min(options?.min, {
             message: (args: ValidationArguments) =>
@@ -126,7 +126,7 @@ export function NumberField(
         );
       }
 
-      if (options?.maxLength) {
+      if (options?.maxLength !== undefined) {
         decorators.push(MaxNumberLength(options?.maxLength));
       }
 
@@ -183,11 +183,11 @@ export function EmailField(
   );
 }
 
-export function IntField(options?: IDtoDecoratorOption) {
+export function IntField(options?: IDtoDecoratorOption & { min?: number }) {
   return initializeDecorators(
     options as IDtoDecoratorOption,
     (decorators: PropertyDecorator[]) => {
-      const messageCustom = {
+      const integerMessage = {
         message: (args: ValidationArguments) =>
           CommonHelpers.formatMessageString(
             MESSAGES.REQUIRED_INTEGER,
@@ -195,7 +195,19 @@ export function IntField(options?: IDtoDecoratorOption) {
           ),
       };
 
-      decorators.push(IsInt(messageCustom), Min(1, messageCustom));
+      const minMessage = {
+        message: (args: ValidationArguments) =>
+          CommonHelpers.formatMessageString(
+            MESSAGES.REQUIRED_NUMBER_MIN_VALUE,
+            args.property,
+            args.constraints[0],
+          ),
+      };
+
+      decorators.push(
+        IsInt(integerMessage),
+        Min(options?.min ?? 1, minMessage),
+      );
     },
   );
 }

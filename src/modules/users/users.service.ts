@@ -49,7 +49,8 @@ export class UsersService {
         id,
       },
       includes: {
-        Product: true,
+        // Soft-delete middleware does not reach nested relation reads.
+        Product: { where: { deletedAt: null } },
       },
     });
 

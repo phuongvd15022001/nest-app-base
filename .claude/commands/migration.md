@@ -1,6 +1,8 @@
-# Migration
+---
+description: Add, edit, or review a Prisma schema change and the migration it generates.
+---
 
-**Type:** Workflow
+# Migration
 
 ## Trigger
 
@@ -12,8 +14,8 @@ Run each step named below through that subagent with the Agent tool (`subagent_t
 
 ## Steps
 
-1. **Inspect current schema pattern** - Use `.claude/skills/sourcebase-reuse-first/SKILL.md` to read `prisma/schema.prisma`, existing migrations in `prisma/migrations/`, naming conventions, and `package.json` scripts.
-2. **Design schema change** - Use `.claude/skills/postgresql/SKILL.md` to define models, fields, indexes, relations, `onDelete` behavior, soft delete, and the reverse migration.
+1. **Inspect current schema pattern** - Use the `sourcebase-reuse-first` skill to read `prisma/schema.prisma`, existing migrations in `prisma/migrations/`, naming conventions, and `package.json` scripts.
+2. **Design schema change** - Use the `postgresql` skill to define models, fields, indexes, relations, `onDelete` behavior, soft delete, and the reverse migration.
 3. **Edit the schema** - the `backend-developer` subagent edits `prisma/schema.prisma` only. Never hand-write SQL into an existing migration folder.
 4. **Generate the migration** - Run `npx prisma migrate dev --name <change_name>`, then review the generated `migration.sql` before committing it.
 5. **Regenerate the client** - Run `npx prisma generate` so `Prisma.*` types and scalar field enums match the schema.

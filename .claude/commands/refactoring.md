@@ -1,6 +1,8 @@
-# Refactoring
+---
+description: Improve backend structure without changing behavior, behind a test safety net.
+---
 
-**Type:** Workflow
+# Refactoring
 
 ## Trigger
 

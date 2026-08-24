@@ -49,6 +49,43 @@ describe('ProductsService', () => {
     });
   });
 
+  describe('findOne - soft-deleted owner', () => {
+    it('omits the owner when the owner is soft deleted', async () => {
+      mockRepo.findOne.mockResolvedValue({
+        id: 1,
+        name: 'Chicken',
+        price: 9.99,
+        userId: 1,
+        user: {
+          id: 1,
+          email: 'a@b.com',
+          name: 'Alice',
+          deletedAt: new Date('2026-01-01'),
+        },
+      });
+
+      const result = await service.findOne(1);
+
+      expect(result.id).toBe(1);
+      expect(result.user).toBeUndefined();
+    });
+
+    it('keeps a live owner', async () => {
+      const user = { id: 1, email: 'a@b.com', name: 'Alice', deletedAt: null };
+      mockRepo.findOne.mockResolvedValue({
+        id: 1,
+        name: 'Chicken',
+        price: 9.99,
+        userId: 1,
+        user,
+      });
+
+      const result = await service.findOne(1);
+
+      expect(result.user).toEqual(user);
+    });
+  });
+
   describe('create', () => {
     it('creates product with the given userId', async () => {
       const dto: CreateProductDto = { name: 'Chicken', price: 9.99 };

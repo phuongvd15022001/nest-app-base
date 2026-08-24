@@ -11,6 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -26,7 +27,7 @@ model User {
   name         String?
   refreshToken String?
   createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
 
   Product Product[]
@@ -43,4 +44,6 @@ model Product {
 
   userId Int
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, deletedAt])
 }

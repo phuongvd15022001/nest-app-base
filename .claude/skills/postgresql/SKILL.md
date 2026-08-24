@@ -17,7 +17,7 @@ Schema lives in `prisma/schema.prisma`. Migrations live in `prisma/migrations/`.
 | --- | --- |
 | Primary key | `Int @id @default(autoincrement())` |
 | Field names | `camelCase` in the schema; no `@map` unless an existing table requires it |
-| Timestamps | `createdAt DateTime @default(now())`, `updatedAt DateTime @updatedAt` |
+| Timestamps | `createdAt DateTime @default(now())`, `updatedAt DateTime @updatedAt` - never `updatedAt @default(now())`, which freezes on insert |
 | Soft delete | Nullable `deletedAt DateTime?` |
 | Relations | Explicit scalar FK field plus `@relation(fields: [...], references: [...])` |
 | Delete behavior | Set `onDelete` explicitly on relations |
@@ -40,18 +40,37 @@ model Order {
 }
 ```
 
+## Prisma Middleware Stack
+
+`PrismaService.onModuleInit` registers **three** middlewares with `$use`, in this order:
+
+| Middleware | Source | What it does |
+| --- | --- | --- |
+| `PrismaListener.onDeleted` | `src/services/prisma/prisma.listener.ts` | Rewrites `delete` / `deleteMany` into a `deletedAt` write, for soft-delete models |
+| `PrismaListener.onFind` | same file | Injects `deletedAt: null` into reads, for soft-delete models |
+| `UserListener.onCreated` | `src/modules/users/users.listener.ts` | Hashes `data.password` on `User.create` and `User.createMany` |
+
+They apply to every call made through `PrismaService`. That includes calls on the `tx` client inside `$transaction`: Prisma routes every operation through `_request`, which runs the `$use` chain before the query and merely passes `runInTransaction` along as metadata. `UsersRepository.createMany` depends on this - it wraps `createMany` in `$transaction`, and the password hashing still happens.
+
+Check this table before adding behavior that looks like it is missing. It may already be happening invisibly.
+
+### Password hashing is automatic on create
+
+`UserListener.onCreated` (exported as `UserListener`, not `UsersListener`) mutates `args.data.password` in place before the query runs. `AuthHelpers.hash` is scrypt and stores `"<salt>:<derivedKey>"`; `AuthHelpers.verify` splits on `:`.
+
+- **Never call `AuthHelpers.hash` yourself on a user-create path.** The middleware already did it. Hashing twice raises no error at write time - it silently makes login fail.
+- It covers `create` and `createMany` only. **`update`, `updateMany`, and `upsert` are not covered**, so a password written through `usersRepository.update` would be stored in plain text. Today `UpdateUserDto` has no `password` field and `forbidNonWhitelisted: true` rejects one, so this is latent rather than live - if you add password changing, hash it explicitly in the service or widen the middleware.
+- Everything else must be hashed by hand. `AuthService.login` does exactly that for the refresh token before calling `usersService.refreshToken`, which goes through `update`.
+
 ## Soft Delete
 
-Soft delete is enforced globally by Prisma middleware in `src/services/prisma/prisma.listener.ts`:
-
-- `PrismaListener.onDeleted` rewrites `delete` to `update` and `deleteMany` to `updateMany`, setting `deletedAt`.
-- `PrismaListener.onFind` injects `deletedAt: null` into `findUnique`, `findFirst`, `findMany`, and `count`.
-
-The middleware only applies to models listed in `SOFT_DELETE_MODEL_NAMES` (`src/services/prisma/prisma.config.ts`).
+`PrismaListener` only applies to models listed in `SOFT_DELETE_MODEL_NAMES` (`src/services/prisma/prisma.config.ts`), currently `User` and `Product`.
 
 - When a new model needs soft delete, add `deletedAt DateTime?` **and** register the model name in `SOFT_DELETE_MODEL_NAMES`.
 - `onFind` rewrites `findUnique` to `findFirst`. Do not rely on `findUnique` returning a unique-constraint-only lookup for soft-delete models.
-- Middleware does not cover raw queries or nested relation filters. Filter `deletedAt` explicitly there.
+- Middleware does not cover raw queries or nested relation filters. Filter `deletedAt` explicitly there, the way `UsersService.findOne` does with `Product: { where: { deletedAt: null } }`.
+- A **required to-one** relation cannot be filtered inside `include` at all. `ProductsService.findOne` therefore loads `user` and drops it afterwards when `user.deletedAt` is set, keeping the product itself visible.
+- **A soft-deleted row still occupies its unique indexes.** `User_email_key` has no `deletedAt` predicate, while `onFind` hides the deleted row from the duplicate check in `UsersService.create`. Re-using a soft-deleted user's email therefore passes the check and then fails at insert with Prisma `P2002`, surfacing as a 500. Handle `P2002`, or run the check with an explicit `deletedAt` filter, whenever a unique value can be recycled.
 
 ## Migration Rules
 

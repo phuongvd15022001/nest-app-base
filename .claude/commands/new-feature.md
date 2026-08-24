@@ -1,6 +1,8 @@
-# New Feature
+---
+description: Build a new backend capability end to end - analysis, design, implementation, tests, review.
+---
 
-**Type:** Workflow
+# New Feature
 
 ## Trigger
 
@@ -16,7 +18,7 @@ Run each step named below through that subagent with the Agent tool (`subagent_t
 
 ## Steps
 
-0. **Context** - `.claude/skills/sourcebase-reuse-first/SKILL.md` inspects existing modules, scripts, patterns, DTOs, repositories, the Prisma schema, migrations, and tests.
+0. **Context** - Use the `sourcebase-reuse-first` skill to inspect existing modules, scripts, patterns, DTOs, repositories, the Prisma schema, migrations, and tests.
 1. **Analysis** - the `backend-analyst` subagent defines acceptance criteria, permissions, data rules, errors, and affected contracts.
 2. **Design** - the `backend-architect` subagent defines module boundaries, endpoint contract, DTOs, Prisma schema changes, transaction boundaries, cache behavior, and test strategy.
 3. **Implementation** - the `backend-developer` subagent implements the smallest scoped change with NestJS, Prisma, PostgreSQL, and Redis guidance.

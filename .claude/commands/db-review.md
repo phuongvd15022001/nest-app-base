@@ -1,6 +1,8 @@
-# Database Review
+---
+description: Review database-facing changes - Prisma models, migrations, indexes, query paths, and transactions.
+---
 
-**Type:** Workflow
+# Database Review
 
 ## Trigger
 
@@ -9,9 +11,9 @@ Use when reviewing database-facing backend changes: Prisma models, migrations, r
 ## Steps
 
 1. **Read the query path** - Identify endpoint, service method, repository call, Prisma model, migration, and cache keys.
-2. **Schema review** - Apply `.claude/skills/postgresql/SKILL.md`.
-3. **Performance review** - Apply `.claude/skills/backend-query-cache-performance/SKILL.md`.
-4. **Cache review** - Apply `.claude/skills/redis-development/SKILL.md` if Redis is involved.
+2. **Schema review** - Apply the `postgresql` skill.
+3. **Performance review** - Apply the `backend-query-cache-performance` skill.
+4. **Cache review** - Apply the `redis-development` skill if Redis is involved.
 5. **Safety review** - Confirm ownership scope, transactions, soft delete middleware coverage, raw-query safety, and broad `updateMany` / `deleteMany` filters.
 6. **Report findings** - Classify blocker, should fix, and suggestion items.
 

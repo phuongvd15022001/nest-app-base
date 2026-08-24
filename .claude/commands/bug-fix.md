@@ -1,6 +1,8 @@
-# Bug Fix
+---
+description: Reproduce, diagnose, fix, and regression-test a backend bug at its root cause.
+---
 
-**Type:** Workflow
+# Bug Fix
 
 ## Trigger
 

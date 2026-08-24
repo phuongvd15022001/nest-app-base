@@ -74,7 +74,7 @@ describe('UsersService', () => {
       await expect(service.findOne(1)).resolves.toEqual(userWithProducts);
       expect(mockRepo.findOne).toHaveBeenCalledWith({
         whereUniqueInput: { id: 1 },
-        includes: { Product: true },
+        includes: { Product: { where: { deletedAt: null } } },
       });
     });
   });

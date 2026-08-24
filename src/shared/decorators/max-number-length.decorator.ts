@@ -10,12 +10,19 @@ import { MESSAGES } from '../constants/message.constants';
 
 @ValidatorConstraint({ name: 'maxNumberLength', async: false })
 class MaxNumberLengthValidator implements ValidatorConstraintInterface {
-  validate(value: number, args: ValidationArguments) {
+  validate(value: unknown, args: ValidationArguments) {
     const maxLength = args.constraints[0] as number;
 
-    const stringValue = value ? value.toString() : '';
+    // Let IsNumber report a non-numeric value instead of failing twice.
+    if (typeof value !== 'number' || !Number.isFinite(value)) {
+      return true;
+    }
 
-    return stringValue.length <= maxLength;
+    // Count digits only: the sign and the decimal point are not digits,
+    // and a literal 0 is one digit rather than an empty string.
+    const digits = Math.abs(value).toString().replace('.', '').length;
+
+    return digits <= maxLength;
   }
 
   defaultMessage(args: ValidationArguments) {

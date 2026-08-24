@@ -72,10 +72,12 @@ Ids are numeric in this project. Use numbers in fixtures and expectations, not U
 ```typescript
 it('returns 400 when query validation fails', async () => {
   await request(app.getHttpServer())
-    .get('/api/orders?page=invalid')
+    .get('/products?page=invalid')
     .expect(400);
 });
 ```
+
+Request paths carry no `/api` prefix. The app has no global prefix, so a route is the `@Controller('<resource>')` path plus the method path - `/products`, `/users/:id`, `/auth/login`.
 
 ## Regression Test Rules
 
@@ -89,6 +91,9 @@ it('returns 400 when query validation fails', async () => {
 - [ ] Test names describe behavior.
 - [ ] Tests use real service logic where practical.
 - [ ] External systems are replaced at provider boundaries.
+- [ ] Request paths match the real routes and carry no `/api` prefix.
+- [ ] List-endpoint assertions read `totalItems` / `allItems`, never `total` or `limit`.
 - [ ] Validation failures are covered.
-- [ ] Authorization failures are covered for protected routes.
+- [ ] Authorization failures are covered for protected routes, including the ADMIN-hits-`@Roles(USER)` 403 case.
+- [ ] `ERole.PUBLIC` routes are tested without a token, and the handler is not assumed to have `@CurrentUser()`.
 - [ ] Bug fixes include a regression test or documented micro-fix reason.
