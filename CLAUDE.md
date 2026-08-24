@@ -1,52 +1,34 @@
-# nest-app-base
+# Project Overview
+You are working in a NestJS backend project. It provides REST APIs for Users, Products, File Uploads, Authentication, and Scheduled Tasks.
 
-NestJS REST API with Prisma + PostgreSQL, JWT auth, file uploads, mail, and scheduled tasks.
+# Tech Stack
+- **Framework:** NestJS (`^11.0.1`)
+- **Database ORM:** Prisma (`^5.10.1`) with PostgreSQL
+- **Authentication:** Passport, JWT (`@nestjs/jwt ^11.0.0`)
+- **Validation:** class-validator (`^0.14.2`), class-transformer (`^0.5.1`)
+- **Documentation:** Swagger (`@nestjs/swagger ^11.2.0`)
+- **Testing:** Jest (`^30.0.0`)
 
-## Skills
+# Commands
+- **Install:** `npm install`
+- **Development:** `npm run start:dev`
+- **Build:** `npm run build`
+- **Lint:** `npm run lint`
+- **Test:** `npm run test` (Unit), `npm run test:e2e` (E2E)
+- **Database Migration:** `npx prisma migrate dev`
+- **Database Generate:** `npx prisma generate`
 
-### NestJS Best Practices
+# Module Structure & Naming Conventions
+- Feature domains are grouped under `src/modules/` (e.g., `products`, `users`, `uploads`).
+- Authentication and cross-cutting concerns are in dedicated directories (`src/auth/`, `src/services/`, `src/schedule/`).
+- Global interceptors, filters, and middlewares are under `src/exceptions/`, `src/filters/`, and `src/middlewares/`.
+- **Naming Conventions:** Kebab-case directories and files. Files suffix their type: `*.module.ts`, `*.controller.ts`, `*.service.ts`, `*.spec.ts`.
 
-`.agents/skills/nestjs-best-practices/SKILL.md`
+# Architecture Conventions
+- **Auth:** JWT Bearer Token based authentication with refresh tokens support (`passport-jwt`). User roles (`USER`, `ADMIN`) are enforced.
+- **Database:** Prisma with PostgreSQL. Migrations are required for schema changes. Soft deletes are used (via `deletedAt`).
+- **Cache / Security:** `@nestjs/throttler` is used for rate-limiting. CORS and Helmet are enabled globally.
+- **Error Response:** Global filters (`AllExceptionsFilter`, `InvalidFormExceptionFilter`) standardize error responses. `ValidationPipe` is enabled globally with whitelist and transformation enabled.
 
-Apply when writing, reviewing, or refactoring any NestJS code. 40 rules across 10 categories:
-
-- **CRITICAL**: `arch-*` (feature modules, no circular deps, repository pattern), `di-*` (constructor injection, interface tokens)
-- **HIGH**: `error-*` (exception filters, HTTP exceptions), `security-*` (JWT guards, class-validator, rate limiting), `perf-*` (caching, N+1 avoidance)
-- **MEDIUM**: `db-*`, `api-*` (DTOs, interceptors, versioning), `test-*`, `devops-*`
-
-Full rules: `.agents/skills/nestjs-best-practices/rules/`
-
-### Prisma Postgres
-
-`.agents/skills/prisma-postgres/SKILL.md`
-
-Apply when working with Prisma schema, migrations, or database provisioning:
-
-- Schema changes → always use migrations (`prisma migrate dev`)
-- New database → `npx create-db@latest` or `prisma postgres link`
-- Programmatic provisioning → `@prisma/management-api-sdk`
-
-Full references: `.agents/skills/prisma-postgres/references/`
-
-### Docker Patterns
-
-`.agents/skills/docker-patterns/SKILL.md`
-
-Apply when working with Docker or Docker Compose:
-
-- Local dev setup → multi-stage Dockerfile, Compose with healthchecks, bind mounts + anonymous volume for `node_modules`
-- Multi-service architecture → custom networks, service discovery by name, expose only necessary ports
-- Security → non-root user, pinned image tags, secrets via env file (never hardcoded), `no-new-privileges`
-- Anti-patterns: `:latest` tags, root user, data without volumes, secrets in `docker-compose.yml`
-
-### Expo CI/CD Workflows
-
-`.agents/skills/expo-cicd-workflows/SKILL.md`
-
-Apply when writing or editing EAS workflow YAML files (`.eas/workflows/*.yml`):
-
-- Always fetch the live JSON schema (`https://api.expo.dev/v2/workflows/schema`) before generating or validating — do not rely on memorized values
-- Use `node .agents/skills/expo-cicd-workflows/scripts/fetch.js <url>` to fetch and cache schema/docs
-- Validate output with `node .agents/skills/expo-cicd-workflows/scripts/validate.js <workflow.yml>`
-- Top-level keys: `name`, `on`, `jobs` (required), `defaults`, `concurrency`
-- Expressions use `${{ }}` syntax with contexts: `github.*`, `inputs.*`, `needs.*`, `steps.*`, `workflow.*`
+# Documentation
+- **API Contracts & Feature Specs:** Accessible locally via Swagger UI at `http://localhost:3000/api/docs` when the app is running.
