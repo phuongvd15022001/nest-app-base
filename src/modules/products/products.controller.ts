@@ -20,10 +20,8 @@ import { TransformInterceptor } from 'src/shared/interceptors/transform.intercep
 import { BasePaginationResponseDto } from 'src/shared/dtos/base-pagination.response.dto';
 import { CurrentUser } from 'src/shared/decorators/current-user.decorator';
 import { ProductsService } from './products.service';
-import {
-  ProductResponseDto,
-  ProductWithUserResponseDto,
-} from './dto/product.response.dto';
+import { ProductResponseDto } from './dto/product.response.dto';
+import { ProductWithUserResponseDto } from './dto/product-with-user.response.dto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { GetListProductsDto } from './dto/get-list-products.dto';
