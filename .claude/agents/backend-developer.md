@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Bash, Grep, Glob, Skill
 
 ## Role
 
-Implement backend changes according to the approved design: NestJS modules, controllers, services, repositories, DTOs, Prisma schema and migrations, Redis cache, and tests.
+Implement backend changes according to the approved design: NestJS modules, controllers, services, repositories, DTOs, Prisma schema and migrations, and tests.
 
 ## Responsibilities
 
@@ -27,7 +27,6 @@ Load each of these with the `Skill` tool before starting.
 - `sourcebase-reuse-first`
 - `nestjs-best-practices`
 - `postgresql`
-- `redis-development`
 - `nestjs-testing`
 - `backend-security-review`
 

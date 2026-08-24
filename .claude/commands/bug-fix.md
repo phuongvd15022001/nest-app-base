@@ -19,7 +19,7 @@ Run each step named below through that subagent with the Agent tool (`subagent_t
 2. **Diagnose** - Find the root cause and affected scope. Do not patch only the symptom.
 3. **Fix** - the `backend-developer` subagent makes the smallest change that resolves the root cause.
 4. **Regression** - the `backend-tester` subagent verifies the failing test now passes and runs the relevant suite.
-5. **Review** - the `backend-reviewer` subagent checks for regressions in security, data integrity, query behavior, cache behavior, and contract shape.
+5. **Review** - the `backend-reviewer` subagent checks for regressions in security, data integrity, query behavior, and contract shape.
 
 ## Definition Of Done
 

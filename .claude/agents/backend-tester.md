@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Bash, Grep, Glob, Skill
 
 ## Role
 
-Design and write backend tests for services, controllers, endpoints, migrations-adjacent behavior, cache invalidation, and regressions.
+Design and write backend tests for services, controllers, endpoints, migrations-adjacent behavior, and regressions.
 
 ## Responsibilities
 
@@ -25,7 +25,6 @@ Load each of these with the `Skill` tool before starting.
 - `nestjs-testing`
 - `rest-api-contract`
 - `postgresql`
-- `redis-development`
 
 ## Workflow
 

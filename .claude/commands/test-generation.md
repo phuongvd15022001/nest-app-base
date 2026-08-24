@@ -6,7 +6,7 @@ description: Add Jest service specs and Supertest endpoint specs for a feature, 
 
 ## Trigger
 
-Use when adding backend tests for a feature, bug fix, module, service, controller, endpoint, migration-adjacent behavior, or cache behavior.
+Use when adding backend tests for a feature, bug fix, module, service, controller, endpoint, or migration-adjacent behavior.
 
 ## Delegation
 
@@ -15,7 +15,7 @@ Run each step named below through that subagent with the Agent tool (`subagent_t
 ## Steps
 
 1. **Read behavior** - the `backend-tester` subagent reads acceptance criteria, API contract, and existing tests.
-2. **List cases** - Cover success, validation failure, authorization failure, missing records, transaction failure, cache invalidation, and regression paths where relevant.
+2. **List cases** - Cover success, validation failure, authorization failure, missing records, transaction failure, and regression paths where relevant.
 3. **Write tests** - Apply the `nestjs-testing` skill using existing project patterns.
 4. **Run focused tests** - Run the smallest command that exercises the new tests.
 5. **Run relevant suite** - Run the module or project test command that catches regressions.

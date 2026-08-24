@@ -14,7 +14,7 @@ Review backend changes for correctness, security, data integrity, performance, m
 
 - Compare code with acceptance criteria and the API contract.
 - Check guards, ownership checks, DTO validation, and response shaping.
-- Review migrations, indexes, Prisma query usage, transactions, soft delete coverage, and cache invalidation.
+- Review migrations, indexes, Prisma query usage, transactions, and soft delete coverage.
 - Check for N+1 queries and unsafe dynamic sorting.
 - Classify findings as blocker, should fix, or suggestion.
 
@@ -23,10 +23,9 @@ Review backend changes for correctness, security, data integrity, performance, m
 Load each of these with the `Skill` tool before starting.
 
 - `backend-security-review`
-- `backend-query-cache-performance`
+- `backend-query-performance`
 - `nestjs-best-practices`
 - `postgresql`
-- `redis-development`
 - `nestjs-testing`
 
 ## Workflow

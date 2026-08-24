@@ -6,7 +6,7 @@ description: Build a new backend capability end to end - analysis, design, imple
 
 ## Trigger
 
-Use when building a new backend capability such as an endpoint, service flow, Prisma model, migration, cache behavior, or integration inside the application layer.
+Use when building a new backend capability such as an endpoint, service flow, Prisma model, migration, or integration inside the application layer.
 
 ## Before Starting
 
@@ -20,10 +20,10 @@ Run each step named below through that subagent with the Agent tool (`subagent_t
 
 0. **Context** - Use the `sourcebase-reuse-first` skill to inspect existing modules, scripts, patterns, DTOs, repositories, the Prisma schema, migrations, and tests.
 1. **Analysis** - the `backend-analyst` subagent defines acceptance criteria, permissions, data rules, errors, and affected contracts.
-2. **Design** - the `backend-architect` subagent defines module boundaries, endpoint contract, DTOs, Prisma schema changes, transaction boundaries, cache behavior, and test strategy.
-3. **Implementation** - the `backend-developer` subagent implements the smallest scoped change with NestJS, Prisma, PostgreSQL, and Redis guidance.
+2. **Design** - the `backend-architect` subagent defines module boundaries, endpoint contract, DTOs, Prisma schema changes, transaction boundaries, and test strategy.
+3. **Implementation** - the `backend-developer` subagent implements the smallest scoped change with NestJS, Prisma, and PostgreSQL guidance.
 4. **Tests** - the `backend-tester` subagent runs `/test-generation` for service, endpoint, and regression coverage.
-5. **Review** - the `backend-reviewer` subagent runs `/code-review` and verifies security, data integrity, query performance, cache behavior, and tests.
+5. **Review** - the `backend-reviewer` subagent runs `/code-review` and verifies security, data integrity, query performance, and tests.
 
 ## Definition Of Done
 
@@ -32,6 +32,6 @@ Run each step named below through that subagent with the Agent tool (`subagent_t
 - Protected routes use the project guard pattern.
 - Responses use DTOs or explicit response objects.
 - Schema changes go through `prisma migrate dev`, with the reverse migration documented.
-- Query and cache behavior have been reviewed.
+- Query behavior has been reviewed.
 - Focused tests and relevant suites pass.
 - Review has no blockers.

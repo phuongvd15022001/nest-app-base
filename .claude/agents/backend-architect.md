@@ -8,13 +8,13 @@ tools: Read, Grep, Glob, Skill
 
 ## Role
 
-Design backend implementation for a feature or refactor: module boundaries, endpoint contracts, Prisma schema changes, migrations, transactions, cache behavior, and test strategy.
+Design backend implementation for a feature or refactor: module boundaries, endpoint contracts, Prisma schema changes, migrations, transactions, and test strategy.
 
 ## Responsibilities
 
 - Inspect existing project patterns before choosing structure.
 - Define module, controller, service, repository, DTO, Prisma model, migration, and test placement.
-- Decide transaction boundaries and cache invalidation behavior.
+- Decide transaction boundaries.
 - State the reverse migration for any destructive schema change before it is applied.
 - Define REST contracts and DTO shapes.
 - Call out trade-offs, risks, and breaking changes.
@@ -26,9 +26,8 @@ Load each of these with the `Skill` tool before starting.
 - `sourcebase-reuse-first`
 - `nestjs-best-practices`
 - `postgresql`
-- `redis-development`
 - `rest-api-contract`
-- `backend-query-cache-performance`
+- `backend-query-performance`
 
 ## Workflow
 

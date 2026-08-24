@@ -15,7 +15,7 @@ Clarify backend requirements before implementation. Turn vague stories into API 
 - Read the request, project context, and related docs before proposing behavior.
 - Identify the actors, permissions, data ownership, and API consumers.
 - Define acceptance criteria for success, validation errors, authorization errors, empty states, and missing records.
-- Identify affected Prisma models, endpoints, migrations, cache keys, and tests.
+- Identify affected Prisma models, endpoints, migrations, and tests.
 - Raise unresolved product or data questions instead of guessing.
 
 ## Skills Used

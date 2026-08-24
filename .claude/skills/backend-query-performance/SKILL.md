@@ -1,13 +1,16 @@
 ---
-name: backend-query-cache-performance
-description: Backend performance guidance for PostgreSQL and Prisma queries, indexing, pagination, N+1 prevention, Redis cache, and request-path efficiency.
+name: backend-query-performance
+description: Backend performance guidance for PostgreSQL and Prisma queries, indexing, pagination, N+1 prevention, and request-path efficiency.
 metadata:
-  stack: postgresql, prisma, redis, performance
+  stack: postgresql, prisma, performance
 ---
 
-# Backend Query And Cache Performance
+# Backend Query Performance
 
-Use this skill when reviewing list endpoints, heavy reads, cache additions, or slow backend behavior.
+Use this skill when reviewing list endpoints, heavy reads, or slow backend behavior.
+
+This project has **no cache layer**. Performance work here means query shape, indexes, and
+pagination - not caching. Never raise "missing cache" as a finding.
 
 ## Query Review
 
@@ -34,14 +37,6 @@ Better patterns:
 - Fetch related rows in one batch with `where: { orderId: { in: orderIds } }`, then group in memory.
 - Use `select` to return summary fields instead of full nested data when list endpoints do not need detail data.
 
-## Cache Review
-
-- Cache only data that is safe to reuse for the same scope.
-- Include filter dimensions in cache keys.
-- Give every key a TTL.
-- Invalidate affected keys after writes.
-- Keep cached response payloads compatible with DTOs.
-
 ## Request-Path Efficiency
 
 - Do not run expensive scans in request handlers.
@@ -53,7 +48,4 @@ Better patterns:
 - [ ] List endpoints paginate.
 - [ ] Filters and sort columns are indexed.
 - [ ] Query avoids N+1 behavior.
-- [ ] Cache key includes scope and filters.
-- [ ] Cache has TTL.
-- [ ] Write paths invalidate cache.
 - [ ] Response does not load unnecessary relation data.

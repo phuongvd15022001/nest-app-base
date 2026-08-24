@@ -1,8 +1,8 @@
 ---
 name: nestjs-best-practices
-description: NestJS backend guidance for feature modules, controllers, services, DTOs, guards, error handling, Prisma integration, Redis cache use, and tests.
+description: NestJS backend guidance for feature modules, controllers, services, DTOs, guards, error handling, Prisma integration, and tests.
 metadata:
-  stack: nestjs, typescript, rest, jwt, prisma, postgresql, redis
+  stack: nestjs, typescript, rest, jwt, prisma, postgresql
 ---
 
 # NestJS Best Practices
@@ -11,7 +11,7 @@ Use this skill when writing, reviewing, or refactoring NestJS backend code.
 
 ## Architecture
 
-- Organize code by feature module under `src/modules/`. A module owns its controller, service, repository, DTOs, tests, and cache behavior.
+- Organize code by feature module under `src/modules/`. A module owns its controller, service, repository, DTOs, and tests.
 - Prefer small services with one clear responsibility over broad service classes.
 - Use constructor injection. Do not instantiate providers manually inside services.
 - Avoid circular module dependencies. Extract shared behavior into a small provider only when two or more modules need it.
@@ -63,7 +63,6 @@ this.productsService.create(createProductDto, Number(currentUser.id));
 - Keep read flows explicit about relations to avoid N+1 behavior.
 - Throw NestJS exceptions such as `NotFoundException`, `BadRequestException`, and `ForbiddenException`.
 - Keep external side effects behind injectable providers so tests can replace them.
-- Invalidate Redis cache immediately after successful writes.
 
 ## DTOs And Validation
 
@@ -146,13 +145,6 @@ export class ProductWithUserResponseDto extends ProductResponseDto {
 - Password hashing is handled by the `UserListener.onCreated` middleware on `User.create` / `createMany`. Do not hash again in a service. See the Prisma Middleware Stack section of the `postgresql` skill for what the three registered middlewares cover, and what they do not.
 - Never build schema changes by hand against the database. Change `prisma/schema.prisma`, then run `npx prisma migrate dev` and `npx prisma generate`.
 
-## Redis
-
-- Use cache-aside for read-heavy resources.
-- Give every cache key a TTL.
-- Use predictable key names: `<model>:<scope>:<id>`.
-- Delete or refresh cache keys after writes.
-
 ## Testing
 
 - Unit test service logic with Nest testing utilities.
@@ -169,5 +161,4 @@ export class ProductWithUserResponseDto extends ProductResponseDto {
 - [ ] Response does not expose raw Prisma model data or sensitive columns.
 - [ ] Dynamic sort fields are whitelisted.
 - [ ] Multi-table writes run in a transaction.
-- [ ] Redis cache has TTL and invalidation.
 - [ ] Tests cover success and important failure cases.

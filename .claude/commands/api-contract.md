@@ -12,7 +12,7 @@ Use when producing or reviewing a REST API contract for backend work.
 
 1. **Read requirements** - Identify actors, auth, data ownership, fields, filters, pagination, and errors.
 2. **Inspect existing contracts** - Use the `sourcebase-reuse-first` skill to find project response and error shapes.
-3. **Draft contract** - Use the `rest-api-contract` skill to document endpoint table, DTOs, status codes, and cache notes.
+3. **Draft contract** - Use the `rest-api-contract` skill to document endpoint table, DTOs, and status codes.
 4. **Review security** - Use the `backend-security-review` skill to confirm auth and output shaping.
 5. **Review database impact** - Use the `postgresql` skill for filters, sorting, pagination, and indexes.
 6. **Finalize** - Provide a contract that implementers and API consumers can use without guessing.
@@ -32,7 +32,6 @@ Errors (bodies follow the Error Shape table in the `rest-api-contract` skill):
 
 Notes:
 - Pagination: `totalItems` = rows in this page, `allItems` = grand total
-- Cache:
 - Breaking changes:
 ```
 
@@ -42,5 +41,4 @@ Notes:
 - Paths carry no `/api` prefix - see Route Convention in the `rest-api-contract` skill.
 - Errors are documented.
 - Pagination and sorting are explicit, and `totalItems` / `allItems` are spelled out.
-- Cache behavior is documented if relevant.
 - Breaking changes are called out.

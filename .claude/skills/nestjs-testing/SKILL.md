@@ -12,7 +12,7 @@ Use this skill when adding or reviewing backend tests.
 ## Test Strategy
 
 - Unit specs live next to the code as `src/modules/<feature>/<feature>.service.spec.ts` and run with `npm run test`. Endpoint specs live in `test/` and run with `npm run test:e2e`.
-- Service tests cover business logic, validation branches delegated to services, transactions, and cache invalidation.
+- Service tests cover business logic, validation branches delegated to services, and transactions.
 - Controller tests cover route wiring only when endpoint tests are too heavy.
 - Endpoint tests with Supertest cover guards, DTO validation, status codes, and response shape.
 - Regression tests reproduce reported bugs before implementation changes.

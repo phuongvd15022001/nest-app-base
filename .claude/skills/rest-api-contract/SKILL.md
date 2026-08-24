@@ -39,7 +39,6 @@ Document every endpoint in a table:
 - Response DTO with field names and types. Only fields carrying `@ResField` are serialized - `TransformInterceptor` drops the rest.
 - Pagination shape for list endpoints.
 - Error shape and important status codes.
-- Cache behavior if the endpoint uses Redis.
 
 ## Pagination Shape
 
@@ -98,5 +97,4 @@ Rules for contracts:
 - [ ] Documented error bodies match the Error Shape table, not a generic `{ statusCode, message, error }`.
 - [ ] Validation errors and missing-resource errors are covered.
 - [ ] Auth requirement is clear.
-- [ ] Cache behavior and invalidation are noted when relevant.
 - [ ] Breaking changes are called out.
